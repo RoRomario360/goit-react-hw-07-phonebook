@@ -1,26 +1,33 @@
 import PropTypes from 'prop-types';
+import {
+  deleteContact,
+  fetchContacts,
+} from 'redux/contacts/contacts-operations';
 import { useSelector, useDispatch } from 'react-redux';
-import { deleteContact } from 'redux/Contacts/contacts-slice';
+import { useEffect } from 'react';
 import s from './ContactList.module.css';
 
 export default function ContactList() {
-  const contacts = useSelector(state => state.contacts.contacts);
   const dispatch = useDispatch();
+  const contacts = useSelector(state => state.contacts.items);
   const filter = useSelector(state => state.contacts.filter);
-
-  const getSearchContacts = () => {
-    return contacts.filter(name =>
-      name.name.toLowerCase().includes(filter.toLowerCase())
-    );
-  };
 
   const handlerDelete = id => {
     dispatch(deleteContact(id));
   };
+  useEffect(() => {
+    dispatch(fetchContacts());
+  }, [dispatch]);
+
+  const filterContacts = () => {
+    return contacts.filter(el =>
+      el.name.toLowerCase().includes(filter.toLowerCase())
+    );
+  };
 
   return (
     <ul>
-      {getSearchContacts()?.map(({ id, name, number }) => {
+      {filterContacts()?.map(({ id, name, number }) => {
         return (
           <li className={s.contact__item} key={id}>
             <p className={s.contact__text}>
