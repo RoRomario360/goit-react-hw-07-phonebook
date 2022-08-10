@@ -28,3 +28,9 @@
 .contact__btn:hover {
   background-color: chocolate;
 }
+.loader {
+  width: 20px;
+  height: 20px;
+  margin-left: auto;
+  margin-right: auto;
+}
